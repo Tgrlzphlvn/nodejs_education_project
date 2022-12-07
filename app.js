@@ -1,27 +1,31 @@
 const express = require("express");
+const mongoose = require("mongoose");
+const pageRoute = require("./routes/pageRoute");
+const courseRoute = require("./routes/courseRoute");
 
 const app = express();
 
+//* Connect DB
+
+mongoose
+  .connect("mongodb://localhost/smartedu-db")
+  .then(() => console.log("DB is started"));
+
 //* Template Engine
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 //* Middlewares
 app.use(express.static("public"));
-
-const port = 3000;
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //* Routes
-app.get("/", (req, res) => {
-  res.status(200).render("index", {
-    page_name: "index"
-  });
-});
+app.use("/", pageRoute);
+app.use("/about", pageRoute);
+app.use("/courses", courseRoute);
 
-app.get("/about", (req, res) => {
-  res.status(200).render("about", {
-    page_name: "about"
-  });
-});
+
+const port = 3000;
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
