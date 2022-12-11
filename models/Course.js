@@ -24,7 +24,10 @@ const CourseSchema = new Schema({
   category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
-    required: true,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 
@@ -37,5 +40,4 @@ CourseSchema.pre("validate", function (next) {
 });
 
 const Course = mongoose.model("Course", CourseSchema);
-
 module.exports = Course;
